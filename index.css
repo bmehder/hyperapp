@@ -1,0 +1,87 @@
+@import url('https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css');
+
+:root {
+	--box-width: 200px;
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+.flow * + * {
+	margin-block-start: 1.5rem;
+}
+
+main {
+	position: relative;
+}
+
+.inner {
+	width: min(100% - 3rem, 64rem);
+	margin-inline: auto;
+}
+
+.list {
+	padding-inline-start: 2rem;
+}
+
+.person {
+	width: var(--box-width);
+	padding: 10px 10px 10px 40px;
+	position: relative;
+	border: 1px #ddd solid;
+	border-radius: 5px;
+	margin-bottom: 10px;
+	cursor: pointer;
+}
+
+.person.highlight {
+	background-color: #fd9;
+}
+.person.selected {
+	border-width: 3px;
+	border-color: #55c;
+	padding-top: 8px;
+	padding-bottom: 8px;
+}
+
+.person input[type='checkbox'] {
+	position: absolute;
+	cursor: default;
+	top: 10px;
+	left: 7px;
+}
+.person.selected input[type='checkbox'] {
+	left: 5px;
+	top: 8px;
+}
+
+.person p {
+	margin: 0;
+	margin-left: 2px;
+}
+.person.selected p {
+	margin-left: 0;
+}
+
+.bio {
+	position: absolute;
+	left: calc(var(--box-width) + 2rem);
+	top: 60px;
+	color: #55c;
+	font-style: italic;
+	font-size: 2rem;
+	text-indent: -1rem;
+}
+.bio:before {
+	content: '"';
+}
+.bio:after {
+	content: '"';
+}
+
+.blue {
+	background-color: blue;
+}

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="./index.css" />
+		<script type="module">
+			import Counter from './counter.js'
+
+			const counter1 = document.querySelector('[data-counter-1]')
+			const counter2 = document.querySelector('[data-counter-2]')
+
+			Counter({ node: counter1 })
+			Counter({ node: counter2, value: 32 })
+		</script>
+	</head>
+
+	<body>
+		<main>
+			<div data-counter-1></div>
+			<div data-counter-2></div>
+		</main>
+	</body>
+</html>
