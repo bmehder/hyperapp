@@ -1,0 +1,28 @@
+.counter-app {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	gap: 3rem;
+
+	.item {
+		display: grid;
+		gap: 1.5rem;
+		text-align: center;
+
+		.item-heading {
+			font-size: 1rem;
+			font-weight: 600;
+			text-transform: uppercase;
+		}
+
+		.item-counter {
+			display: grid;
+			place-items: center;
+			padding: 3rem;
+			background-color: hsl(213, 66%, 96%);
+			font-size: 3rem;
+			font-variant-numeric: tabular-nums;
+			border-radius: 50%;
+		}
+	}
+}
