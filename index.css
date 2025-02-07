@@ -19,7 +19,7 @@ main {
 }
 
 .inner {
-	width: min(100% - 3rem, 64rem);
+	width: min(100% - 3rem, 48rem);
 	margin-inline: auto;
 }
 
