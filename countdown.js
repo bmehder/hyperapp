@@ -6,8 +6,8 @@ const [div] = ['div'].map(tag)
 // Data
 const targetDate = new Date('2025-02-28T23:59:59').getTime()
 
-// Helper function
-const getTimeLeft = () => {
+// Action
+const GetTimeLeft = () => {
 	const now = new Date().getTime()
 	const diff = targetDate - now
 	return {
@@ -34,18 +34,17 @@ const view = state =>
 		item(state.seconds, 'Secs'),
 	])
 
+// Custom Subscribers
+const countdown = dispatch => {
+	const interval = setInterval(() => dispatch(GetTimeLeft), 1000)
+	return () => clearInterval(interval)
+}
+
 // Export app
 export default ({ node }) =>
 	app({
-		init: getTimeLeft(),
+		init: GetTimeLeft(),
 		view,
 		node,
-		subscriptions: _ => [
-			[
-				dispatch => {
-					const interval = setInterval(() => dispatch(getTimeLeft()), 1000)
-					return () => clearInterval(interval)
-				},
-			],
-		],
+		subscriptions: _state => [[countdown]],
 	})
