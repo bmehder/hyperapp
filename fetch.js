@@ -1,26 +1,23 @@
 import { app, tag, text, jsonFetcher } from './hyper-utils.js'
 import { pipe, compose, map, pluck } from 'https://esm.run/nejquery'
 
-// Create HTML functions
-const [div, ul, li] = ['div', 'ul', 'li'].map(tag)
-const pluckItems = pluck('items')
-const pluckTitle = pluck('title')
+// Partially applied functions
+const pluckFromArray = map(pluck)
+const createElements = map(tag)
+
+const [items, title] = pluckFromArray(['items', 'title'])
+const [div, ul, li] = createElements(['div', 'ul', 'li'])
+
+// [State, Effect]
+const init = url => [{ items: [] }, jsonFetcher(url, GotItems)]
 
 // Actions
 const GotItems = (state, data) => ({ ...state, items: data })
 
-// State w/ an Effect
-const init = url => [{ items: [] }, jsonFetcher(url, GotItems)]
-
-// Helpers
-const listItem = pipe(text, li)
-const titleToListItem = pipe(pluckTitle, listItem)
-const mapTitlesToListItems = map(titleToListItem)
-const titles = pipe(pluckItems, mapTitlesToListItems)
-
 // Views
-const list = compose(ul, titles)
-const view = compose(div, list)
+const listItem = pipe(title, text, li)
+const listItems = pipe(items, map(listItem))
+const view = compose(div, ul, listItems)
 
 // Export App
 export default ({ url, node }) => app({ init: init(url), view, node })
