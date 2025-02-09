@@ -10,8 +10,29 @@
 	padding: 0;
 }
 
-.flow * + * {
+p,
+label {
+	max-width: 65ch;
+}
+
+.form-group input {
+	max-width: 10ch;
+	position: relative;
+
+	&[type='text'] {
+		color: #bada55;
+	}
+}
+
+.flow > * + * {
 	margin-block-start: 1.5rem;
+}
+
+.spread-apart {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 1rem;
 }
 
 main {
@@ -21,6 +42,7 @@ main {
 .inner {
 	width: min(100% - 3rem, 48rem);
 	margin-inline: auto;
+	padding-block: 3rem;
 }
 
 .list {

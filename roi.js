@@ -1,9 +1,8 @@
 import { app, tag, text } from './hyper-utils.js'
+import { map } from 'https://esm.run/nejquery'
 
 // Compose HTML element functions
-const [div, label, input] = ['div', 'label', 'input'].map(tag)
-
-// Data
+const [div, label, input] = map(tag)(['div', 'label', 'input'])
 
 // Init
 const init = () => ({
@@ -17,109 +16,107 @@ const init = () => ({
 const eachNewClient = state => state.avgSale * (1 + state.repeatPercent / 100)
 
 // Action
-const SetAvgSale = (state, event) => ({ ...state, avgSale: event.target.value })
-const SetRepeatPercent = (state, event) => ({
+const UpdateAvgSale = (state, event) => ({ ...state, avgSale: event.target.value })
+const UpdateRepeatPercent = (state, event) => ({
 	...state,
 	repeatPercent: event.target.value,
 })
-const SetLeadsPercent = (state, event) => ({
+const UpdateLeadsPercent = (state, event) => ({
 	...state,
 	leadsPercent: event.target.value,
 })
-const SetMoreLeadsPerMonth = (state, event) => ({
+const UpdateMoreLeadsPerMonth = (state, event) => ({
 	...state,
 	moreLeadsPerMonth: event.target.value,
 })
-// View Component
+
+// View Components
+const formGroup = ({
+	type = 'number',
+	_label,
+	value,
+	oninput,
+	step,
+	readonly = false,
+}) =>
+	div({ class: 'form-group spread-apart' }, [
+		label(text(_label)),
+		input({
+			type,
+			value: value,
+			oninput: oninput,
+			step: step,
+			readonly: readonly,
+		}),
+	])
 
 // View
 const view = state =>
 	div({ class: 'flow' }, [
-		div([
-			label(text('Enter the average amount of a sale for your business:')),
-			input({
-				type: 'number',
-				value: state.avgSale,
-				oninput: SetAvgSale,
-				step: 100,
-			}),
-		]),
-		div([
-			label(text('Enter the percentage of repeat business:')),
-			input({
-				type: 'number',
-				value: state.repeatPercent,
-				oninput: SetRepeatPercent,
-				step: 10,
-			}),
-		]),
-		div([
-			label(text('Cool, each new client you get is worth this amount:')),
-			input({
-				type: 'number',
-				value: parseInt(eachNewClient(state)),
-				readonly: true,
-			}),
-		]),
-		div([
-			label(text('Enter percentage of leads you convert to a paying client:')),
-			input({
-				type: 'number',
-				value: state.leadsPercent,
-				oninput: SetLeadsPercent,
-				step: 10,
-			}),
-		]),
-		div([
-			label(text('So then, each new lead is worth this to your business:')),
-			input({
-				type: 'number',
-				value: parseInt((eachNewClient(state) * state.leadsPercent) / 100),
-				readonly: true,
-			}),
-		]),
-		div([
-			label(
-				text(
-					'Now, how many more leads a month do you think you can win with your new, persuasive message?'
-				)
+		formGroup({
+			_label: 'Enter the average amount of a sale for your business:',
+			value: state.avgSale,
+			oninput: UpdateAvgSale,
+			step: 100,
+		}),
+		formGroup({
+			_label: 'Enter the percentage of repeat business:',
+			value: state.repeatPercent,
+			oninput: UpdateRepeatPercent,
+			step: 10,
+		}),
+		formGroup({
+			type: 'text',
+			_label: 'Cool, each new client you get is worth this amount:',
+			value: String('$' + parseInt(eachNewClient(state))),
+			readonly: true,
+		}),
+		formGroup({
+			_label: 'Enter percentage of leads you convert to a paying client:',
+			value: state.leadsPercent,
+			oninput: UpdateLeadsPercent,
+			step: 10,
+		}),
+		formGroup({
+			type: 'text',
+			_label: 'So then, each new lead is worth this to your business:',
+			value: String(
+				'$' + parseInt((eachNewClient(state) * state.leadsPercent) / 100)
 			),
-			input({
-				type: 'number',
-				value: state.moreLeadsPerMonth,
-				oninput: SetMoreLeadsPerMonth,
-			}),
-		]),
-		div([
-			label(text('So, this is how much more you could earn per month:')),
-			input({
-				type: 'number',
-				value: parseInt(
-					state.moreLeadsPerMonth *
-						parseInt((eachNewClient(state) * state.leadsPercent) / 100)
-				),
-				oninput: SetMoreLeadsPerMonth,
-				readonly: true,
-			}),
-		]),
-		div([
-			label(text('And this is how much more you could earn per year:')),
-			input({
-				type: 'number',
-				value: parseInt(
-					state.moreLeadsPerMonth *
-						parseInt((eachNewClient(state) * state.leadsPercent) / 100) *
-						12
-				),
-				readonly: true,
-			}),
-		]),
+			readonly: true,
+		}),
+		formGroup({
+			_label:
+				'Now, how many more leads a month do you think you can win with your new, persuasive message?',
+			value: state.moreLeadsPerMonth,
+			oninput: UpdateMoreLeadsPerMonth,
+		}),
+		formGroup({
+			type: 'text',
+			_label: 'So, this is how much more you could earn per month:',
+			value: String(
+				'$' +
+					parseInt(
+						state.moreLeadsPerMonth *
+							parseInt((eachNewClient(state) * state.leadsPercent) / 100)
+					)
+			),
+			readonly: true,
+		}),
+		formGroup({
+			type: 'text',
+			_label: 'And this is how much more you could earn per year:',
+			value: String(
+				'$' +
+					parseInt(
+						state.moreLeadsPerMonth *
+							parseInt((eachNewClient(state) * state.leadsPercent) / 100) *
+							12
+					)
+			),
+			readonly: true,
+		}),
 	])
 
 // Export app
-export default ({ node }) =>
-	app({
-		init,
-		view,
-		node,
-	})
+export default ({ node }) => app({ init, view, node })
