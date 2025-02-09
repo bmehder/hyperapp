@@ -15,4 +15,7 @@ const jsonFetcher = (url, action) => [fetchJson, { url, action }]
 const onClick = onclick => ({ onclick })
 const onInput = oninput => ({ oninput })
 
-export { text, app, tag, onClick, onInput, jsonFetcher }
+const preventDefault = action => (state, event) =>
+	[state, [dispatch => (event.preventDefault(), dispatch(action))]]
+
+export { text, app, tag, onClick, onInput, jsonFetcher, preventDefault }

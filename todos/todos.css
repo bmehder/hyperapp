@@ -1,0 +1,23 @@
+body {
+	font-size: 1.5em;
+}
+
+ul {
+	padding: 0;
+}
+
+li {
+	list-style: none;
+}
+
+form {
+	display: flex;
+}
+
+div > * + * {
+	margin-block-start: 1.5rem;
+}
+
+input[type='checkbox']:checked + span {
+	text-decoration: line-through;
+}
