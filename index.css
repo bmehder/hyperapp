@@ -15,8 +15,16 @@ label {
 	max-width: 65ch;
 }
 
+button,
+input,
+textarea,
+select {
+	font: inherit;
+	line-height: inherit;
+}
+
 .form-group input {
-	max-width: 10ch;
+	width: 10ch;
 	position: relative;
 
 	&[type='text'] {

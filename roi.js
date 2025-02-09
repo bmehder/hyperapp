@@ -45,16 +45,20 @@ const formGroup = ({
 	value,
 	oninput,
 	step,
+	min,
+	max,
 	readonly = false,
 }) =>
 	div({ class: 'form-group spread-apart' }, [
 		label(text(_label)),
 		input({
 			type,
-			value: value,
-			oninput: oninput,
-			step: step,
-			readonly: readonly,
+			value,
+			oninput,
+			step,
+			min,
+			max,
+			readonly,
 		}),
 	])
 
@@ -71,6 +75,8 @@ const view = state =>
 			_label: 'Enter the percentage of repeat business:',
 			value: state.repeatPercent,
 			oninput: UpdateRepeatPercent,
+			min: 0,
+			max: 100,
 			step: 10,
 		}),
 		formGroup({
@@ -83,6 +89,8 @@ const view = state =>
 			_label: 'Enter percentage of leads you convert to a paying client:',
 			value: state.leadsPercent,
 			oninput: UpdateLeadsPercent,
+			min: 0,
+			max: 100,
 			step: 10,
 		}),
 		formGroup({
