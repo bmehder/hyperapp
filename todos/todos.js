@@ -6,6 +6,7 @@ const createTodoItem = value => ({
 	isEditing: false,
 	lastValue: '',
 	value,
+	id: window.crypto.randomUUID(),
 })
 
 const preventDefault = action => (state, event) =>
@@ -30,18 +31,28 @@ const submit = value => h('input', { type: 'submit', value })
 const input = ({ oninput, ...props }) =>
 	h('input', { type: 'text', oninput: targetValue(oninput), ...props })
 
-const todoItemView = value => label([checkbox, span(text(value))])
+const todoItemView = (value, id) =>
+	label([
+		checkbox,
+		span(text(value)),
+		h('button', { onclick: [DeleteItem, id] }, text('X')),
+	])
 
 const todosView = ({ title, todos }) => [
 	h('h1', {}, text(title)),
-	ul(todos.map(todo => li(todoItemView(todo.value)))),
+	ul(todos.map(todo => li(todoItemView(todo.value, todo.id)))),
 ]
 
 // Actions
 const NewValue = (state, value) => ({ ...state, value })
 
+const DeleteItem = (state, id) => ({
+	...state,
+	todos: state.todos.filter(x => x.id !== id),
+})
+
 const NewTodo = state =>
-	state.value === ''
+	!state.value.trim()
 		? state
 		: {
 				...state,
