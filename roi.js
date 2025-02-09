@@ -4,6 +4,17 @@ import { map } from 'https://esm.run/nejquery'
 // Compose HTML element functions
 const [div, label, input] = map(tag)(['div', 'label', 'input'])
 
+// helpers
+const eachNewClient = state => state.avgSale * (1 + state.repeatPercent / 100)
+
+const toUSD = num =>
+	new Intl.NumberFormat('en-US', {
+		style: 'currency',
+		currency: 'USD',
+		minimumFractionDigits: 0,
+		maximumFractionDigits: 0,
+	}).format(num)
+
 // Init
 const init = () => ({
 	avgSale: 500,
@@ -11,9 +22,6 @@ const init = () => ({
 	leadsPercent: 10,
 	moreLeadsPerMonth: 1,
 })
-
-// helpers
-const eachNewClient = state => state.avgSale * (1 + state.repeatPercent / 100)
 
 // Action
 const UpdateAvgSale = (state, event) => ({ ...state, avgSale: event.target.value })
@@ -68,7 +76,7 @@ const view = state =>
 		formGroup({
 			type: 'text',
 			_label: 'Cool, each new client you get is worth this amount:',
-			value: String('$' + parseInt(eachNewClient(state))),
+			value: toUSD(eachNewClient(state)),
 			readonly: true,
 		}),
 		formGroup({
@@ -80,9 +88,7 @@ const view = state =>
 		formGroup({
 			type: 'text',
 			_label: 'So then, each new lead is worth this to your business:',
-			value: String(
-				'$' + parseInt((eachNewClient(state) * state.leadsPercent) / 100)
-			),
+			value: toUSD((eachNewClient(state) * state.leadsPercent) / 100),
 			readonly: true,
 		}),
 		formGroup({
@@ -94,25 +100,19 @@ const view = state =>
 		formGroup({
 			type: 'text',
 			_label: 'So, this is how much more you could earn per month:',
-			value: String(
-				'$' +
-					parseInt(
-						state.moreLeadsPerMonth *
-							parseInt((eachNewClient(state) * state.leadsPercent) / 100)
-					)
+			value: toUSD(
+				state.moreLeadsPerMonth *
+					parseInt((eachNewClient(state) * state.leadsPercent) / 100)
 			),
 			readonly: true,
 		}),
 		formGroup({
 			type: 'text',
 			_label: 'And this is how much more you could earn per year:',
-			value: String(
-				'$' +
-					parseInt(
-						state.moreLeadsPerMonth *
-							parseInt((eachNewClient(state) * state.leadsPercent) / 100) *
-							12
-					)
+			value: toUSD(
+				state.moreLeadsPerMonth *
+					parseInt((eachNewClient(state) * state.leadsPercent) / 100) *
+					12
 			),
 			readonly: true,
 		}),
