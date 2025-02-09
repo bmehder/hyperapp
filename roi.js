@@ -57,7 +57,7 @@ const view = state =>
 			label(text('Cool, each new client you get is worth this amount:')),
 			input({
 				type: 'number',
-				value: eachNewClient(state),
+				value: parseInt(eachNewClient(state)),
 				readonly: true,
 			}),
 		]),
