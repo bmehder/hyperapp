@@ -47,5 +47,5 @@ const view = state =>
 		result(state),
 	])
 
-// Export function to create an instance of the
+// Export function to create an instance of the app
 export default ({ node }) => app({ init, view, node })

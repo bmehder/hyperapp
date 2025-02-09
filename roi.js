@@ -32,6 +32,7 @@ const init = () => ({
 
 // Action
 const UpdateAvgSale = (state, event) => ({ ...state, avgSale: event.target.value })
+
 const UpdateRepeatPercent = (state, event) => ({
 	...state,
 	repeatPercent: event.target.value,
