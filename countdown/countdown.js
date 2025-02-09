@@ -1,4 +1,4 @@
-import { app, tag, text } from './hyper-utils.js'
+import { app, tag, text } from '../hyperapp.js'
 
 // Compose HTML element functions
 const [div] = ['div'].map(tag)
@@ -35,7 +35,7 @@ const view = state =>
 	])
 
 // Custom Subscribers
-const countdown = dispatch => {
+const onCountdown = dispatch => {
 	const interval = setInterval(() => dispatch(GetTimeLeft), 1000)
 	return () => clearInterval(interval)
 }
@@ -43,8 +43,8 @@ const countdown = dispatch => {
 // Export app
 export default ({ node }) =>
 	app({
-		init: GetTimeLeft(),
+		init: GetTimeLeft,
 		view,
 		node,
-		subscriptions: _state => [[countdown]],
+		subscriptions: _state => [[onCountdown]],
 	})

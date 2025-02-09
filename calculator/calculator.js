@@ -1,4 +1,4 @@
-import { app, tag, text, onInput, onClick } from './hyper-utils.js'
+import { app, tag, text, onInput, onClick } from '../hyperapp.js'
 import { compose, isNullish, not } from 'https://esm.run/nejquery'
 
 // Composed HTML functions

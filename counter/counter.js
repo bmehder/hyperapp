@@ -1,4 +1,4 @@
-import { app, tag, text, onClick } from './hyper-utils.js'
+import { app, tag, text, onClick } from '../hyperapp.js'
 
 // Create HTML functions
 const [div, h1, button] = ['div', 'h1', 'button'].map(tag)

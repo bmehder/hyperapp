@@ -1,4 +1,4 @@
-import { app, tag, text } from './hyper-utils.js'
+import { app, tag, text } from '../hyperapp.js'
 import { map } from 'https://esm.run/nejquery'
 
 // Compose HTML element functions

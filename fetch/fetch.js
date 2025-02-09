@@ -1,4 +1,4 @@
-import { app, tag, text, jsonFetcher } from './hyper-utils.js'
+import { app, tag, text, jsonFetcher } from '../hyperapp.js'
 import { pipe, compose, map, pluck } from 'https://esm.run/nejquery'
 
 // Partially applied functions

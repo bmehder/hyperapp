@@ -1,4 +1,4 @@
-import { app, tag, text } from './hyper-utils.js'
+import { app, tag, text } from '../hyperapp.js'
 import { compose } from 'https://esm.run/nejquery'
 
 const [input, h1, div] = ['input', 'h1', 'main'].map(tag)
