@@ -32,9 +32,8 @@ const input = ({ oninput, ...props }) =>
 	h('input', { type: 'text', oninput: targetValue(oninput), ...props })
 
 const todoItemView = (value, id) =>
-	label([
-		checkbox,
-		span(text(value)),
+	div([
+		label([checkbox, span(text(value))]),
 		h('button', { onclick: [DeleteItem, id] }, text('X')),
 	])
 

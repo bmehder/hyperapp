@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" href="data:image/png;base64,iVBORw0KGgo=" />
+		<link rel="stylesheet" href="./index.css" />
+		<title>Todo App</title>
+		<script type="module">
+			import Todos from './src/app.js'
+
+			Todos({ node: document.querySelector('[data-app]') })
+		</script>
+	</head>
+	<body>
+		<div data-app></div>
+	</body>
+</html>
