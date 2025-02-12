@@ -1,13 +1,8 @@
-import { app, tag, text } from '../hyperapp.js'
-
-// Compose HTML element functions
-const [div] = ['div'].map(tag)
-
-// Data
-const targetDate = new Date('2025-02-28T23:59:59').getTime()
+import { app, html, text } from '../hyperapp.js'
 
 // Action
-const GetTimeLeft = () => {
+const GetTimeLeft = _targetDate => {
+	const targetDate = new Date(_targetDate).getTime()
 	const now = new Date().getTime()
 	const diff = targetDate - now
 	return {
@@ -20,14 +15,14 @@ const GetTimeLeft = () => {
 
 // View Component
 const item = (value, label) =>
-	div({ class: 'item' }, [
-		div({ class: 'item-counter' }, text(value.toString().padStart(2, '0'))),
-		div({ class: 'item-heading' }, [text(label)]),
+	html.div({ class: 'item' }, [
+		html.div({ class: 'item-counter' }, text(value.toString().padStart(2, '0'))),
+		html.div({ class: 'item-heading' }, [text(label)]),
 	])
 
 // View
 const view = state =>
-	div({ class: 'counter-app' }, [
+	html.div({ class: 'counter-app' }, [
 		item(state.days, 'Days'),
 		item(state.hours, 'Hours'),
 		item(state.minutes, 'Mins'),
@@ -35,16 +30,16 @@ const view = state =>
 	])
 
 // Custom Subscribers
-const onCountdown = dispatch => {
-	const interval = setInterval(() => dispatch(GetTimeLeft), 1000)
+const onCountdown = (dispatch, date) => {
+	const interval = setInterval(() => dispatch(GetTimeLeft(date)), 1000)
 	return () => clearInterval(interval)
 }
 
 // Export app
-export default ({ node }) =>
+export default ({ node, date }) =>
 	app({
-		init: GetTimeLeft,
+		init: [GetTimeLeft, date],
 		view,
 		node,
-		subscriptions: _state => [[onCountdown]],
+		subscriptions: _state => [[onCountdown, date]],
 	})

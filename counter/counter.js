@@ -1,24 +1,24 @@
-import { app, tag, text, onClick } from '../hyperapp.js'
+import { app, text } from '../hyperapp.js'
+import * as html from 'https://esm.run/@hyperapp/html'
 
-// Create HTML functions
-const [div, h1, button] = ['div', 'h1', 'button'].map(tag)
-
-// State
-const init = (count = 0) => ({ count })
+const addOne = x => x + 1
+const subOne = x => x - 1
+const double = x => x * 2
+const zero = () => 0
 
 // Actions
-const Subtract = state => ({ ...state, count: state.count - 1 })
-const Reset = state => ({ ...state, count: 0 })
-const Add = state => ({ ...state, count: state.count + 1 })
-const Double = state => ({ ...state, count: state.count * 2 })
+const Subtract = state => ({ ...state, count: subOne(state.count) })
+const Reset = state => ({ ...state, count: zero() })
+const Add = state => ({ ...state, count: addOne(state.count) })
+const Double = state => ({ ...state, count: double(state.count) })
 
 // View Components
-const counterButton = (str, action) => button(onClick(action), text(str))
+const counterButton = (str, action) => html.button({ onclick: action }, text(str))
 
 // View
 const view = state =>
-	div([
-		h1(text(state.count)),
+	html.div([
+		html.h1(text(state.count)),
 		counterButton('ー', Subtract),
 		counterButton('0', Reset),
 		counterButton('＋', Add),
@@ -26,4 +26,4 @@ const view = state =>
 	])
 
 // Export API
-export default ({ value, node }) => app({ init: init(value), view, node })
+export default ({ value, node }) => app({ init: { count: value ?? 0 }, view, node })

@@ -1,4 +1,5 @@
 import { h, text, app } from 'https://esm.run/hyperapp'
+import * as html from 'https://esm.run/@hyperapp/html'
 
 const tag =
 	tag =>
@@ -18,4 +19,4 @@ const onInput = oninput => ({ oninput })
 const preventDefault = action => (state, event) =>
 	[state, [dispatch => (event.preventDefault(), dispatch(action))]]
 
-export { text, app, tag, onClick, onInput, jsonFetcher, preventDefault }
+export { html, text, app, tag, onClick, onInput, jsonFetcher, preventDefault }

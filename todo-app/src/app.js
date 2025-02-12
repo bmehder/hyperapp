@@ -16,7 +16,6 @@ const addItem = AddItem.wire({
 })
 
 // Actions
-
 const ToggleDone = (state, index) => {
 	const done = [...state.done]
 	done[index] = !done[index]
