@@ -1,66 +1,47 @@
-import { h, text, app } from 'https://esm.run/hyperapp'
+import { text, app } from 'https://esm.run/hyperapp'
 import * as html from 'https://esm.run/@hyperapp/html'
 import { focuser } from './lib/io.js'
+import { list } from './lib/views.js'
+import todoItem from './todo-item.js'
+import * as AddItem from './add-item.js'
 
-// Helpers
-const withEnterKey = action => (state, payload) => {
-	if (payload.key && payload.key === 'Enter') return [action, payload]
-	return state
-}
-
-const withTargetValue = action => (state, payload) => {
-	if (payload.target && payload.target.value) return [action, payload.target.value]
-	return state
-}
-
-// Actions
-const InputNewItem = (state, input) => ({
-	...state,
-	newitem: input,
+const addItem = AddItem.wire({
+	get: state => state.newitem,
+	set: (state, newitem) => ({ ...state, newitem }),
+	onadd: (state, newitem) => ({
+		...state,
+		items: [newitem, ...state.items],
+		done: [false, ...state.done],
+	}),
 })
 
-const AddItem = state =>
-	!state.newitem
-		? state
-		: {
-				...state,
-				items: [state.newitem, ...state.items],
-				done: [false, ...state.done],
-				newitem: null,
-		  }
+// Actions
 
 const ToggleDone = (state, index) => {
-	let done = [...state.done]
+	const done = [...state.done]
 	done[index] = !done[index]
 	return { ...state, done }
 }
 
-const Delete = (state, index) => {
-	let items = [...state.items]
-	let done = [...state.done]
-	items.splice(index, 1)
-	done.splice(index, 1)
-	return { ...state, items, done }
-}
+const Delete = (state, index) => ({
+	...state,
+	items: state.items.toSpliced(index, 1),
+	done: state.done.toSpliced(index, 1),
+})
 
-const StartEditing = (state, index) => {
-	return [
-		{
-			...state,
-			editing: index,
-		},
-		focuser('.itemlist input[type=text]'),
-	]
-}
+const StartEditing = (state, index) => ({
+	...state,
+	editing: index,
+})
 
 const StopEditing = state => ({
 	...state,
 	editing: null,
 })
 
-const InputEditing = (state, input) => {
-	let items = [...state.items]
-	items[state.editing] = input
+const InputEditing = (state, value) => {
+	const items = [...state.items]
+	items[state.editing] = value
 	return { ...state, items }
 }
 
@@ -68,54 +49,35 @@ const InputEditing = (state, input) => {
 export default ({ node }) =>
 	app({
 		init: [
-			{ newitem: null, items: [], done: [], editing: null },
+			{ newitem: AddItem.init(), items: [], done: [], editing: null },
 			focuser('.newitementry input[type=text'),
 		],
 		view: state =>
 			html.div([
 				html.header(html.h1(text('Todo App'))),
 				html.main([
-					html.section({ class: 'newitementry' }, [
-						html.input({
-							type: 'text',
-							value: state.newitem,
-							oninput: withTargetValue(InputNewItem),
-							placeholder: 'What do you need to do?',
-							onkeypress: withEnterKey(AddItem),
-						}),
-						html.button({ onclick: AddItem }, text('+')),
-					]),
-					html.section({ class: 'itemlist' }, [
-						html.ul(
-							state.items.map((itemText, index) =>
-								html.li(
-									state.editing === index
-										? html.input({
-												type: 'text',
-												value: state.items[index],
-												oninput: withTargetValue(InputEditing),
-												onblur: StopEditing,
-												onkeypress: withEnterKey(StopEditing),
-										  })
-										: [
-												html.input({
-													type: 'checkbox',
-													checked: state.done[index],
-													oninput: [ToggleDone, index],
-												}),
-												html.span(
-													{
-														onclick: [StartEditing, index],
-														class: { done: state.done[index] },
-													},
-													text(itemText)
-												),
-												html.button({ onclick: [Delete, index] }, text('X')),
-										  ]
-								)
-							)
-						),
-					]),
+					html.section(
+						{ class: 'newitementry' },
+						AddItem.view(addItem.model(state))
+					),
+					html.section(
+						{ class: 'itemlist' },
+						list({
+							items: state.items,
+							render: (_, index) =>
+								todoItem({
+									value: state.items[index],
+									editing: state.editing === index,
+									checked: state.done[index],
+									onedit: [StartEditing, index],
+									oninput: InputEditing,
+									ondone: StopEditing,
+									onblur: StartEditing,
+									ontoggle: [ToggleDone, index],
+									ondelete: [Delete, index],
+								}),
+						})
+					),
 				]),
 			]),
 		node,
