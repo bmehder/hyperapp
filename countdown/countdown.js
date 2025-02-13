@@ -30,16 +30,16 @@ const view = state =>
 	])
 
 // Custom Subscribers
-const onCountdown = (dispatch, date) => {
-	const interval = setInterval(() => dispatch(GetTimeLeft(date)), 1000)
+const onCountdown = (dispatch, { date, _interval }) => {
+	const interval = setInterval(() => dispatch(GetTimeLeft(date)), _interval)
 	return () => clearInterval(interval)
 }
 
 // Export app
-export default ({ node, date }) =>
+export default ({ node, date, interval = 0 }) =>
 	app({
-		init: [GetTimeLeft, date],
+		init: [GetTimeLeft, { date, interval }],
 		view,
 		node,
-		subscriptions: _state => [[onCountdown, date]],
+		subscriptions: _state => [[onCountdown, { date, interval: 1000 }]],
 	})

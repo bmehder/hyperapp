@@ -1,8 +1,6 @@
-import { app, tag, text, onInput, onClick } from '../hyperapp.js'
+import { app, text } from '../hyperapp.js'
 import { compose, isNullish, not } from 'https://esm.run/nejquery'
-
-// Composed HTML functions
-const [div, button, p, input] = ['div', 'button', 'p', 'input'].map(tag)
+import * as html from 'https://esm.run/@hyperapp/html'
 
 // Utility function
 const isNotNullish = not(isNullish)
@@ -24,20 +22,20 @@ const UpdateFirst = (state, event) => ({ ...state, first: +event.target.value })
 const UpdateLast = (state, event) => ({ ...state, last: +event.target.value })
 
 // View Components
-const calcButton = (str, action) => button(onClick(action), text(str))
+const calcButton = (str, action) => html.button({ onclick: action }, text(str))
 
 const numberInput = (value, action) =>
-	input({
+	html.input({
 		type: 'number',
 		value,
-		...onInput(action),
+		oninput: action,
 	})
 
-const result = ({ result }) => isNotNullish(result) && compose(p, text)(result)
+const result = ({ result }) => isNotNullish(result) && compose(html.p, text)(result)
 
 // View
 const view = state =>
-	div([
+	html.div([
 		numberInput(state.first, UpdateFirst),
 		numberInput(state.last, UpdateLast),
 		calcButton('Add', Add),

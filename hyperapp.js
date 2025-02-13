@@ -19,4 +19,4 @@ const onInput = oninput => ({ oninput })
 const preventDefault = action => (state, event) =>
 	[state, [dispatch => (event.preventDefault(), dispatch(action))]]
 
-export { html, text, app, tag, onClick, onInput, jsonFetcher, preventDefault }
+export { h, html, text, app, tag, onClick, onInput, jsonFetcher, preventDefault }
