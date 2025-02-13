@@ -13,9 +13,15 @@ const init = [
 		todos: [],
 		dones: [],
 		newTodo: null,
+		show: 'all',
 	},
 	focuser('.new-todo-input'),
 ]
+
+// Derived State
+const todosCount = state => state.todos.length
+const completedTodosCount = state => state.dones.filter(Boolean).length
+const isSingleTodo = state => todosCount(state) === 1
 
 // Actions
 const SetInputValue = (state, value) => ({ ...state, newTodo: value })
@@ -44,11 +50,25 @@ const DeleteTodo = (state, index) => ({
 })
 
 // View Components
-const list = state =>
+const todoTitle = () => html.h1(text('Todo List'))
+
+const todoInput = state =>
+	html.div({ class: 'new-todo' }, [
+		html.input({
+			class: 'new-todo-input',
+			value: state.newTodo,
+			oninput: withTargetValue(SetInputValue),
+			onkeydown: withEnterKey(AddTodo),
+			placeholder: 'Add new todo...',
+		}),
+		html.button({ onclick: AddTodo }, text('+')),
+	])
+
+const todoList = state =>
 	html.ul(
 		state.todos.map((todo, index) =>
 			html.li([
-				html.div([
+				html.div({ class: 'form-group' }, [
 					html.input({
 						id: `todo-item-${index}`,
 						type: 'checkbox',
@@ -68,21 +88,21 @@ const list = state =>
 		)
 	)
 
-const textInput = state =>
-	html.div({ class: 'new-todo' }, [
-		html.input({
-			class: 'new-todo-input',
-			value: state.newTodo,
-			oninput: withTargetValue(SetInputValue),
-			onkeydown: withEnterKey(AddTodo),
-			placeholder: 'Add new todo...',
-		}),
-		html.button({ onclick: AddTodo }, text('+')),
+const todosInfo = state =>
+	html.p([
+		text(completedTodosCount(state)),
+		text(' / '),
+		text(todosCount(state) + (isSingleTodo(state) ? ' todo' : ' todos')),
 	])
 
 // View
 const view = state =>
-	html.div({ class: 'todo-app' }, [textInput(state), list(state)])
+	html.div({ class: 'todo-app' }, [
+		todoTitle(),
+		todoInput(state),
+		todoList(state),
+		todosInfo(state),
+	])
 
 // Export function to create app instance
 export default ({ node }) => app({ init, view, node })
