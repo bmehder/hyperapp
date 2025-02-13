@@ -49,7 +49,7 @@ export default ({ node }) =>
 	app({
 		init: [
 			{ newitem: AddItem.init(), items: [], done: [], editing: null },
-			focuser('.newitementry input[type=text'),
+			focuser('.newitementry input[type=text]'),
 		],
 		view: state =>
 			html.div([

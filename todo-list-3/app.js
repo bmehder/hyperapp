@@ -1,13 +1,25 @@
-import { html, app, text, withEnterKey, withTargetValue } from '../hyperapp.js'
+import {
+	html,
+	app,
+	text,
+	withEnterKey,
+	withTargetValue,
+	focuser,
+} from '../hyperapp.js'
 
 // Initial State
-const init = {
-	todos: [],
-	dones: [],
-	newTodo: null,
-}
+const init = [
+	{
+		todos: [],
+		dones: [],
+		newTodo: null,
+	},
+	focuser('.new-todo-input'),
+]
 
 // Actions
+const SetInputValue = (state, value) => ({ ...state, newTodo: value })
+
 const AddTodo = state => ({
 	...state,
 	todos: [state.newTodo, ...state.todos],
@@ -15,7 +27,15 @@ const AddTodo = state => ({
 	newTodo: null,
 })
 
-const UpdateNewTodo = (state, value) => ({ ...state, newTodo: value })
+const UpdateTodo = (state, index) => {
+	const dones = [...state.dones]
+	dones[index] = !dones[index]
+
+	return {
+		...state,
+		dones,
+	}
+}
 
 const DeleteTodo = (state, index) => ({
 	...state,
@@ -23,39 +43,37 @@ const DeleteTodo = (state, index) => ({
 	dones: state.dones.toSpliced(index, 1),
 })
 
-const UpdateTodo = (state, index) => {
-	const todos = [...state.todos]
-	const dones = [...state.dones]
-	dones[index] = !dones[index]
-
-	return {
-		...state,
-		todos,
-		dones,
-	}
-}
-
 // View Components
 const list = state =>
 	html.ul(
 		state.todos.map((todo, index) =>
 			html.li([
-				html.input({
-					type: 'checkbox',
-					checked: state.dones[index],
-					oninput: [UpdateTodo, index],
-				}),
-				text(todo),
+				html.div([
+					html.input({
+						id: `todo-item-${index}`,
+						type: 'checkbox',
+						checked: state.dones[index],
+						oninput: [UpdateTodo, index],
+					}),
+					html.label(
+						{
+							for: `todo-item-${index}`,
+							class: { 'line-through': state.dones[index] },
+						},
+						text(todo)
+					),
+				]),
 				html.button({ onclick: [DeleteTodo, index] }, text('X')),
 			])
 		)
 	)
 
 const textInput = state =>
-	html.div([
+	html.div({ class: 'new-todo' }, [
 		html.input({
+			class: 'new-todo-input',
 			value: state.newTodo,
-			oninput: withTargetValue(UpdateNewTodo),
+			oninput: withTargetValue(SetInputValue),
 			onkeydown: withEnterKey(AddTodo),
 			placeholder: 'Add new todo...',
 		}),
@@ -63,7 +81,8 @@ const textInput = state =>
 	])
 
 // View
-const view = state => html.div([textInput(state), list(state)])
+const view = state =>
+	html.div({ class: 'todo-app' }, [textInput(state), list(state)])
 
 // Export function to create app instance
 export default ({ node }) => app({ init, view, node })

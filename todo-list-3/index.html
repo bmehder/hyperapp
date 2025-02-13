@@ -4,6 +4,63 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<title>Todo List 3</title>
+		<style>
+			* {
+				box-sizing: border-box;
+				margin: 0;
+				padding: 0;
+			}
+			input,
+			button {
+				font: inherit;
+			}
+			.outer {
+				font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+					Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+				font-size: 1.5rem;
+			}
+			.inner {
+				width: min(100% - 3rem, 48rem);
+				margin-inline: auto;
+				padding-block: 3rem;
+			}
+			.todo-app {
+				max-width: 24rem;
+				margin-inline: auto;
+			}
+			.new-todo {
+				display: grid;
+				grid-template-columns: auto 3rem;
+
+				input,
+				button {
+					padding: 1rem;
+				}
+			}
+			li {
+				display: grid;
+				grid-template-columns: 1fr auto;
+				align-items: center;
+				gap: 1rem;
+				padding-block: 1rem;
+
+				div {
+					display: flex;
+					align-items: center;
+					gap: 0.5rem;
+				}
+
+				input,
+				button {
+					width: 32px;
+					height: 32px;
+				}
+			}
+			.line-through {
+				text-decoration: line-through;
+			}
+		</style>
+
 		<script type="module">
 			import Todos from './app.js'
 
@@ -11,6 +68,12 @@
 		</script>
 	</head>
 	<body>
-		<div data-app></div>
+		<section>
+			<div class="outer">
+				<div class="inner">
+					<div data-app></div>
+				</div>
+			</div>
+		</section>
 	</body>
 </html>
