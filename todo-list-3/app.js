@@ -1,8 +1,4 @@
-import { html, app, text } from '../hyperapp.js'
-
-// Decorators
-const withEnterKey = action => (state, payload) =>
-	payload.key === 'Enter' ? [action, payload] : state
+import { html, app, text, withEnterKey, withTargetValue } from '../hyperapp.js'
 
 // Initial State
 const init = {
@@ -19,7 +15,7 @@ const AddTodo = state => ({
 	newTodo: null,
 })
 
-const UpdateNewTodo = (state, event) => ({ ...state, newTodo: event.target.value })
+const UpdateNewTodo = (state, value) => ({ ...state, newTodo: value })
 
 const DeleteTodo = (state, index) => ({
 	...state,
@@ -55,19 +51,19 @@ const list = state =>
 		)
 	)
 
-// View
-const view = state =>
+const textInput = state =>
 	html.div([
-		html.div([
-			html.input({
-				value: state.newTodo,
-				oninput: UpdateNewTodo,
-				onkeydown: withEnterKey(AddTodo),
-				placeholder: 'Add new todo...',
-			}),
-			html.button({ onclick: AddTodo }, text('+')),
-		]),
-		list(state),
+		html.input({
+			value: state.newTodo,
+			oninput: withTargetValue(UpdateNewTodo),
+			onkeydown: withEnterKey(AddTodo),
+			placeholder: 'Add new todo...',
+		}),
+		html.button({ onclick: AddTodo }, text('+')),
 	])
 
+// View
+const view = state => html.div([textInput(state), list(state)])
+
+// Export function to create app instance
 export default ({ node }) => app({ init, view, node })
