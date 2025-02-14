@@ -1,23 +1,22 @@
-import { app, tag, text, jsonFetcher } from '../hyperapp.js'
-import { pipe, compose, map, pluck } from 'https://esm.run/nejquery'
-
-// Partially applied functions
-const pluckFromArray = map(pluck)
-const createElements = map(tag)
-
-const [items, title] = pluckFromArray(['items', 'title'])
-const [div, ul, li] = createElements(['div', 'ul', 'li'])
+import { app, html, text, jsonFetcher } from '../hyperapp.js'
 
 // [State, Effect]
-const init = url => [{ items: [] }, jsonFetcher(url, GotItems)]
+const setInitialStateAndEffects = url => [{ items: [] }, jsonFetcher(url, GotItems)]
 
-// Actions
+// [Actions, Effect]
+// const GotItems = (state, data) => [{ ...state, items: data }, console.log(data)]
 const GotItems = (state, data) => ({ ...state, items: data })
 
+// Component Views
+const title = item => html.h2(text(item.title))
+const postBody = str =>
+	text(str.slice(0, 1).toUpperCase().concat(str.slice(1).concat('...')))
+const listItem = item => html.li([title(item), html.div(postBody(item.body))])
+const listItems = state => state.items.map(listItem)
+
 // Views
-const listItem = pipe(title, text, li)
-const listItems = pipe(items, map(listItem))
-const view = compose(div, ul, listItems)
+const view = state => html.ul({ class: 'auto-fit' }, listItems(state))
 
 // Export App
-export default ({ url, node }) => app({ init: init(url), view, node })
+export default ({ url, node }) =>
+	app({ init: setInitialStateAndEffects(url), view, node })

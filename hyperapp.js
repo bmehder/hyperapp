@@ -1,6 +1,7 @@
 import { h, text, app } from 'https://esm.run/hyperapp'
 import * as html from 'https://esm.run/@hyperapp/html'
 import { focus, blur } from 'https://unpkg.com/@hyperapp/dom'
+import { pipe, see } from 'https://esm.run/nejquery'
 
 const tag =
 	tag =>
@@ -23,6 +24,20 @@ const withEnterKey = action => (state, payload) =>
 const withTargetValue = action => (state, payload) =>
 	payload.target.value ? [action, payload.target.value] : state
 
+const withLogging = dispatch => (action, props) => {
+	console.group(`Action: ${action.name || 'anonymous'}`)
+	console.log('Props:', props)
+	const result = dispatch(action, props)
+	console.log('New State:', result)
+	console.groupEnd()
+	return result
+}
+
+const log = state => {
+	console.log('State changed:', state)
+	return state
+}
+
 const preventDefault = action => (state, event) =>
 	[state, [dispatch => (event.preventDefault(), dispatch(action))]]
 
@@ -38,6 +53,10 @@ export {
 	preventDefault,
 	withEnterKey,
 	withTargetValue,
+	withLogging,
 	focus,
 	blur,
+	log,
+	pipe,
+	see,
 }

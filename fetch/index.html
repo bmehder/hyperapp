@@ -6,11 +6,26 @@
 		<link rel="icon" href="data:image/png;base64,iVBORw0KGgo=" />
 		<link rel="stylesheet" href="../index.css" />
 		<title>Fetch</title>
+		<style>
+			h2 {
+				text-wrap: balance;
+				text-transform: capitalize;
+			}
+			ul {
+				list-style: none;
+			}
+			.auto-fit {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
+				gap: 3rem;
+				margin-inline: auto;
+			}
+		</style>
 		<script type="module">
 			import Fetch from './fetch.js'
 
 			Fetch({
-				url: 'https://jsonplaceholder.typicode.com/todos/',
+				url: 'https://jsonplaceholder.typicode.com/posts/',
 				node: document.querySelector('[data-fetch]'),
 			})
 		</script>
