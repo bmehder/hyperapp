@@ -1,7 +1,7 @@
 import { html, app, focus } from '../hyperapp.js'
 import * as Views from './+views.js'
 
-const setInitialState = (title, todos) => [
+const setInitialState = (title = 'Todo List', todos = []) => [
 	{
 		title,
 		todos,
@@ -20,5 +20,5 @@ const view = state =>
 		Views.todosInfo(state),
 	])
 
-export default ({ node, title = 'Todo List', todos = [] }) =>
+export default ({ node, title, todos }) =>
 	app({ init: setInitialState(title, todos), view, node })
