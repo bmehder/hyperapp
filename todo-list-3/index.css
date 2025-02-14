@@ -1,0 +1,111 @@
+/* Resets */
+:root {
+	color-scheme: dark light;
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+input,
+button {
+	font: inherit;
+	line-height: inherit;
+}
+
+input {
+	min-width: 0;
+}
+
+button {
+	border: none;
+}
+
+/* Document */
+body {
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+		Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	line-height: 1.5;
+}
+
+/* Utilities */
+.flow > * + * {
+	margin-block-start: 1.5rem;
+}
+
+.auto-fill {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(min(24rem, 100%), 1rem));
+	gap: 3rem;
+}
+
+.line-through {
+	text-decoration: line-through;
+}
+
+/* Section Skins */
+.outer {
+	font-size: 1.25rem;
+
+	.selected {
+		background-color: dodgerblue;
+		color: white;
+	}
+}
+
+/* Section Layout */
+.inner {
+	width: min(100% - 3rem, 52rem);
+	margin-inline: auto;
+	padding-block: 3rem;
+}
+
+/* Component */
+.todo-app {
+	/* max-width: 24rem; */
+	margin-inline: auto;
+
+	.new-todo {
+		display: grid;
+		grid-template-columns: auto 3rem;
+
+		input,
+		button {
+			padding: 1rem;
+		}
+	}
+
+	li {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		align-items: center;
+		gap: 1rem;
+		padding-block: 1rem;
+
+		.form-group {
+			display: flex;
+			align-items: center;
+			gap: 0.5rem;
+		}
+
+		input,
+		button {
+			width: 32px;
+			height: 32px;
+		}
+	}
+
+	.filter-buttons {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		gap: 0.5rem;
+
+		button {
+			padding: 0.5rem;
+			flex: 1;
+		}
+	}
+}
