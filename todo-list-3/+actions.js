@@ -34,7 +34,7 @@ export const FilterRemaining = state => ({
 	filter: 'remaining',
 })
 
-export const ShowAll = state => ({
+export const FilterAll = state => ({
 	...state,
 	filter: 'all',
 })

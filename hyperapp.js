@@ -1,5 +1,6 @@
 import { h, text, app } from 'https://esm.run/hyperapp'
 import * as html from 'https://esm.run/@hyperapp/html'
+import { focus, blur } from 'https://unpkg.com/@hyperapp/dom'
 
 const tag =
 	tag =>
@@ -25,14 +26,6 @@ const withTargetValue = action => (state, payload) =>
 const preventDefault = action => (state, event) =>
 	[state, [dispatch => (event.preventDefault(), dispatch(action))]]
 
-const _focuser = (_, options) => {
-	requestAnimationFrame(() => {
-		document.querySelector(options.selector)?.focus()
-	})
-}
-
-const focuser = selector => [_focuser, { selector }]
-
 export {
 	h,
 	html,
@@ -45,5 +38,6 @@ export {
 	preventDefault,
 	withEnterKey,
 	withTargetValue,
-	focuser,
+	focus,
+	blur,
 }

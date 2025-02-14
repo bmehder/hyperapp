@@ -3,13 +3,22 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="icon" href="data:image/png;base64,iVBORw0KGgo=" />
 		<title>Todo List 3</title>
 		<link rel="stylesheet" href="./index.css" />
 		<script type="module">
 			import Todos from './index.js'
 
 			Todos({ node: document.querySelector('[data-app]'), title: 'My Todo List' })
-			Todos({ node: document.querySelector('[data-app-2]') })
+
+			Todos({
+				node: document.querySelector('[data-app-2]'),
+				todos: [
+					{ isDone: false, name: 'Bananas' },
+					{ isDone: true, name: 'Oranges' },
+					{ isDone: false, name: 'Apples' },
+				],
+			})
 		</script>
 	</head>
 	<body>

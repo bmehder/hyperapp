@@ -1,14 +1,14 @@
-import { html, app, focuser } from '../hyperapp.js'
+import { html, app, focus } from '../hyperapp.js'
 import * as Views from './+views.js'
 
-const setInitialState = title => [
+const setInitialState = (title, todos) => [
 	{
-		todos: [],
+		title,
+		todos,
 		newTodo: null,
 		filter: 'all',
-		title,
 	},
-	focuser('.new-todo-input'),
+	focus('todo-input'),
 ]
 
 const view = state =>
@@ -20,5 +20,5 @@ const view = state =>
 		Views.todosInfo(state),
 	])
 
-export default ({ node, title = 'Todo List' }) =>
-	app({ init: setInitialState(title), view, node })
+export default ({ node, title = 'Todo List', todos = [] }) =>
+	app({ init: setInitialState(title, todos), view, node })
