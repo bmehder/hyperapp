@@ -1,10 +1,8 @@
 import { html, tag, text, withEnterKey, withTargetValue } from '../hyperapp.js'
 import * as Actions from './+actions.js'
 
-// Title
 export const todoTitle = ({ title }) => html.h1(text(title))
 
-// Todo Input
 export const todoInput = state =>
 	html.div({ class: 'new-todo' }, [
 		html.input({
@@ -17,7 +15,6 @@ export const todoInput = state =>
 		html.button({ onclick: Actions.AddTodo }, text('+')),
 	])
 
-// Filter Buttons
 const filterButton = ({ selected, onclick, txt }) =>
 	html.li(html.button({ class: { selected }, onclick }, text(txt)))
 
@@ -40,7 +37,6 @@ export const todoFilters = state =>
 		}),
 	])
 
-// Todo List
 const _todoList = todos =>
 	html.ul(
 		todos.map((todo, index) =>
@@ -75,7 +71,6 @@ export const todoList = state =>
 		? _todoList(state.todos.filter(isNotDone))
 		: _todoList(state.todos)
 
-// Todos Info
 const todosCount = state => state.todos.length
 
 const completedTodosCount = state =>

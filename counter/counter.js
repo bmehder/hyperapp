@@ -6,7 +6,7 @@ const Helpers = {
 	double: x => x * 2,
 	zero: () => 0,
 }
-// Actions
+
 const Actions = {
 	Subtract: state => ({ ...state, count: Helpers.subOne(state.count) }),
 	Reset: state => ({ ...state, count: Helpers.zero() }),
@@ -26,6 +26,5 @@ const Views = {
 		]),
 }
 
-// Export API
 export default ({ value, node }) =>
 	app({ init: { count: value ?? 0 }, view: Views.default, node })
