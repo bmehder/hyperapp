@@ -1,12 +1,11 @@
-import { app, html, text, every } from '../hyperapp.js'
+import { app, html, text } from '../hyperapp.js'
 
 // Action
-const GetTimeLeft = (_, date) => {
-	const targetDate = new Date(date).getTime()
+const GetTimeLeft = _targetDate => {
+	const targetDate = new Date(_targetDate).getTime()
 	const now = new Date().getTime()
 	const diff = targetDate - now
 	return {
-		targetDate,
 		days: Math.floor(diff / (1000 * 60 * 60 * 24)),
 		hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
 		minutes: Math.floor((diff / (1000 * 60)) % 60),
@@ -30,11 +29,17 @@ const view = state =>
 		item(state.seconds, 'Secs'),
 	])
 
+// Custom Subscribers
+const onCountdown = (dispatch, { date, _interval }) => {
+	const interval = setInterval(() => dispatch(GetTimeLeft(date)), _interval)
+	return () => clearInterval(interval)
+}
+
 // Export app
-export default ({ node, date }) =>
+export default ({ node, date, interval = 0 }) =>
 	app({
-		init: [GetTimeLeft, date],
+		init: [GetTimeLeft, { date, interval }],
 		view,
 		node,
-		subscriptions: state => [every(1000, [GetTimeLeft, date])],
+		subscriptions: _state => [[onCountdown, { date, interval: 1000 }]],
 	})
