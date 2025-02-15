@@ -1,5 +1,13 @@
-import { app, html, text, withTargetValue, onClick, onInput } from '../hyperapp.js'
-import { not, isNullish } from 'https://esm.run/nejquery'
+import {
+	app,
+	html,
+	text,
+	withTargetValue,
+	onClick,
+	onInput,
+	not,
+	isNullish,
+} from '../hyperapp.js'
 
 const Helpers = {
 	isNotNullish: not(isNullish),

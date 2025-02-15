@@ -2,7 +2,7 @@ import { h, text, app } from 'https://esm.run/hyperapp'
 import * as html from 'https://esm.run/@hyperapp/html'
 import { focus, blur } from 'https://unpkg.com/@hyperapp/dom'
 import { every, delay, now } from 'https://unpkg.com/@hyperapp/time'
-import { pipe, see } from 'https://esm.run/nejquery'
+import { pipe, see, not, isNullish } from 'https://esm.run/nejquery'
 
 const tag =
 	tag =>
@@ -63,4 +63,6 @@ export {
 	every,
 	delay,
 	now,
+	not,
+	isNullish,
 }
