@@ -93,7 +93,7 @@ main {
 .inner {
 	width: min(100% - 3rem, 48rem);
 	margin-inline: auto;
-	padding-block: 3rem;
+	padding-block: 1.5rem;
 }
 
 .list {
