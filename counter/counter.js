@@ -1,29 +1,31 @@
-import { app, text } from '../hyperapp.js'
-import * as html from 'https://esm.run/@hyperapp/html'
+import { app, html, onClick, text } from '../hyperapp.js'
 
-const addOne = x => x + 1
-const subOne = x => x - 1
-const double = x => x * 2
-const zero = () => 0
-
+const Helpers = {
+	addOne: x => x + 1,
+	subOne: x => x - 1,
+	double: x => x * 2,
+	zero: () => 0,
+}
 // Actions
-const Subtract = state => ({ ...state, count: subOne(state.count) })
-const Reset = state => ({ ...state, count: zero() })
-const Add = state => ({ ...state, count: addOne(state.count) })
-const Double = state => ({ ...state, count: double(state.count) })
+const Actions = {
+	Subtract: state => ({ ...state, count: Helpers.subOne(state.count) }),
+	Reset: state => ({ ...state, count: Helpers.zero() }),
+	Add: state => ({ ...state, count: Helpers.addOne(state.count) }),
+	Double: state => ({ ...state, count: Helpers.double(state.count) }),
+}
 
-// View Components
-const counterButton = (str, action) => html.button({ onclick: action }, text(str))
-
-// View
-const view = state =>
-	html.div([
-		html.h1(text(state.count)),
-		counterButton('ー', Subtract),
-		counterButton('0', Reset),
-		counterButton('＋', Add),
-		counterButton('x2', Double),
-	])
+const Views = {
+	counterButton: (str, action) => html.button(onClick(action), text(str)),
+	default: state =>
+		html.div([
+			html.h1(text(state.count)),
+			Views.counterButton('ー', Actions.Subtract),
+			Views.counterButton('0', Actions.Reset),
+			Views.counterButton('＋', Actions.Add),
+			Views.counterButton('x2', Actions.Double),
+		]),
+}
 
 // Export API
-export default ({ value, node }) => app({ init: { count: value ?? 0 }, view, node })
+export default ({ value, node }) =>
+	app({ init: { count: value ?? 0 }, view: Views.default, node })

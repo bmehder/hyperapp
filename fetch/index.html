@@ -7,10 +7,6 @@
 		<link rel="stylesheet" href="../index.css" />
 		<title>Fetch</title>
 		<style>
-			h2 {
-				text-wrap: balance;
-				text-transform: capitalize;
-			}
 			ul {
 				list-style: none;
 			}
@@ -19,18 +15,33 @@
 				grid-template-columns: repeat(auto-fit, minmax(min(16rem, 100%), 1fr));
 				gap: 3rem;
 				margin-inline: auto;
+
+				h2 {
+					text-wrap: balance;
+					text-transform: capitalize;
+				}
 			}
 		</style>
 		<script type="module">
 			import Fetch from './fetch.js'
 
+			const node = document.querySelector('[data-fetch]')
+
 			Fetch({
-				url: 'https://jsonplaceholder.typicode.com/posts/',
 				node: document.querySelector('[data-fetch]'),
+				url: node.getAttribute('data-fetch'),
 			})
 		</script>
 	</head>
 	<body>
-		<div data-fetch></div>
+		<main>
+			<section>
+				<div class="outer">
+					<div class="inner">
+						<div data-fetch="https://jsonplaceholder.typicode.com/posts/"></div>
+					</div>
+				</div>
+			</section>
+		</main>
 	</body>
 </html>

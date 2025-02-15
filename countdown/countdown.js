@@ -1,40 +1,48 @@
 import { app, html, text, every } from '../hyperapp.js'
 
-// Action
-const GetTimeLeft = (_, date) => {
-	const targetDate = new Date(date).getTime()
-	const now = new Date().getTime()
-	const diff = targetDate - now
-	return {
-		targetDate,
-		days: Math.floor(diff / (1000 * 60 * 60 * 24)),
-		hours: Math.floor((diff / (1000 * 60 * 60)) % 24),
-		minutes: Math.floor((diff / (1000 * 60)) % 60),
-		seconds: Math.floor((diff / 1000) % 60),
-	}
+const Helpers = {
+	getDays: diff => Math.floor(diff / (1000 * 60 * 60 * 24)),
+	getHours: diff => Math.floor((diff / (1000 * 60 * 60)) % 24),
+	getMinutes: diff => Math.floor((diff / (1000 * 60)) % 60),
+	getSeconds: diff => Math.floor((diff / 1000) % 60),
 }
 
-// View Component
-const item = (value, label) =>
-	html.div({ class: 'item' }, [
-		html.div({ class: 'item-counter' }, text(value.toString().padStart(2, '0'))),
-		html.div({ class: 'item-heading' }, [text(label)]),
-	])
+const Actions = {
+	default: (state, date) => {
+		const targetDate = state?.targetDate ?? new Date(date).getTime()
+		const now = new Date().getTime()
+		const diff = targetDate - now
 
-// View
-const view = state =>
-	html.div({ class: 'counter-app' }, [
-		item(state.days, 'Days'),
-		item(state.hours, 'Hours'),
-		item(state.minutes, 'Mins'),
-		item(state.seconds, 'Secs'),
-	])
+		return {
+			targetDate,
+			days: Helpers.getDays(diff),
+			hours: Helpers.getHours(diff),
+			minutes: Helpers.getMinutes(diff),
+			seconds: Helpers.getSeconds(diff),
+		}
+	},
+}
 
-// Export app
+const Views = {
+	timeUnit: (value, label) =>
+		html.div({ class: 'item' }, [
+			html.div({ class: 'item-heading' }, text(label)),
+			html.div({ class: 'item-counter' }, text(value.toString().padStart(2, '0'))),
+		]),
+
+	default: state =>
+		html.div({ class: 'counter-view' }, [
+			Views.timeUnit(state.days, 'Days'),
+			Views.timeUnit(state.hours, 'Hours'),
+			Views.timeUnit(state.minutes, 'Mins'),
+			Views.timeUnit(state.seconds, 'Secs'),
+		]),
+}
+
 export default ({ node, date }) =>
 	app({
-		init: [GetTimeLeft, date],
-		view,
+		init: [Actions.default, date],
+		view: Views.default,
 		node,
-		subscriptions: state => [every(1000, [GetTimeLeft, date])],
+		subscriptions: state => [every(1000, [Actions.default, state.date])],
 	})

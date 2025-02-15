@@ -4,20 +4,30 @@
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<link rel="icon" href="data:image/png;base64,iVBORw0KGgo=" />
+		<link rel="stylesheet" href="../index.css" />
 		<link rel="stylesheet" href="./countdown.css" />
+
 		<script type="module">
 			import Countdown from './countdown.js'
 
+			const node = document.querySelector('[data-countdown]')
+
 			Countdown({
-				node: document.querySelector('[data-countdown]'),
-				date: '2025-02-28T23:59:59',
+				node,
+				date: node.getAttribute('data-countdown'),
 			})
 		</script>
 	</head>
 
 	<body>
 		<main>
-			<div data-countdown></div>
+			<section>
+				<div class="outer">
+					<div class="inner">
+						<div data-countdown="2025-03-01T04:59:59"></div>
+					</div>
+				</div>
+			</section>
 		</main>
 	</body>
 </html>

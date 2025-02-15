@@ -10,6 +10,10 @@
 	padding: 0;
 }
 
+body {
+	max-width: 100%;
+}
+
 p,
 label {
 	max-width: 65ch;

@@ -1,26 +1,27 @@
-import { app, tag, text } from '../hyperapp.js'
-import { compose } from 'https://esm.run/nejquery'
+import { app, html, text, onInput, focus, withTargetValue } from '../hyperapp.js'
 
-const [input, h1, div] = ['input', 'h1', 'main'].map(tag)
+const Actions = {
+	init: () => [
+		{
+			message: '',
+		},
+		focus('text-input'),
+	],
+	SetText: (state, value) => ({ ...state, message: value }),
+}
 
-// State
-const init = { message: '' }
+const Views = {
+	textInput: value =>
+		html.input({
+			id: 'text-input',
+			type: 'text',
+			value,
+			...onInput(withTargetValue(Actions.SetText)),
+			placeholder: 'Type something...',
+		}),
 
-// Action
-const SetText = (state, event) => ({ ...state, message: event.target.value })
+	default: ({ message }) =>
+		html.div([Views.textInput(message), html.h1(text(message))]),
+}
 
-// View component
-const textInput = value =>
-	input({
-		type: 'text',
-		value,
-		oninput: SetText,
-		placeholder: 'Type in something...',
-		autofocus: true,
-	})
-
-// View
-const view = ({ message }) => div([textInput(message), compose(h1, text)(message)])
-
-// Export App
-export default ({ node }) => app({ init, view, node })
+export default ({ node }) => app({ init: Actions.init, view: Views.default, node })

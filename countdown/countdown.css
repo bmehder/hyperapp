@@ -1,4 +1,4 @@
-.counter-app {
+.counter-view {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
@@ -19,7 +19,7 @@
 			display: grid;
 			place-items: center;
 			padding: 3rem;
-			background-color: hsl(213, 66%, 96%);
+			background-color: hsla(213, 66%, 96%, 10%);
 			font-size: 3rem;
 			font-variant-numeric: tabular-nums;
 			border-radius: 50%;

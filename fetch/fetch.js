@@ -1,22 +1,25 @@
 import { app, html, text, jsonFetcher } from '../hyperapp.js'
 
-// [State, Effect]
-const setInitialStateAndEffects = url => [{ items: [] }, jsonFetcher(url, GotItems)]
+const Helpers = {
+	toProperCase: str => str.slice(0, 1).toUpperCase().concat(str.slice(1)),
+}
 
-// [Actions, Effect]
-// const GotItems = (state, data) => [{ ...state, items: data }, console.log(data)]
-const GotItems = (state, data) => ({ ...state, items: data })
+const Actions = {
+	SetInitialStateAndEffects: (_state, url) => [
+		{ items: [] },
+		jsonFetcher(url, Actions.GotItems),
+	],
+	GotItems: (state, data) => ({ ...state, items: data }),
+}
 
-// Component Views
-const title = item => html.h2(text(item.title))
-const postBody = str =>
-	text(str.slice(0, 1).toUpperCase().concat(str.slice(1).concat('...')))
-const listItem = item => html.li([title(item), html.div(postBody(item.body))])
-const listItems = state => state.items.map(listItem)
+const Views = {
+	title: item => html.h2(text(item.title)),
+	postBody: str => Helpers.toProperCase(str).concat('...'),
+	listItem: item =>
+		html.li([Views.title(item), html.div(text(Views.postBody(item.body)))]),
+	listItems: state => state.items.map(Views.listItem),
+	default: state => html.ul({ class: 'auto-fit' }, Views.listItems(state)),
+}
 
-// Views
-const view = state => html.ul({ class: 'auto-fit' }, listItems(state))
-
-// Export App
 export default ({ url, node }) =>
-	app({ init: setInitialStateAndEffects(url), view, node })
+	app({ init: [Actions.SetInitialStateAndEffects, url], view: Views.default, node })
