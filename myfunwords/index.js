@@ -16,6 +16,8 @@ export default class MyFunWords extends HTMLElement {
 			'ForeignLanguage',
 			'Technology',
 			'Art',
+			'DEI',
+			'JustKidding',
 		]
 
 		this.currentIndex = 0
