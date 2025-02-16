@@ -24,7 +24,7 @@ export default class MyFunWords extends HTMLElement {
 		this.shadowRoot.innerHTML = `
                     <style>
                         .container {
-                            font-size: 2em;
+                            font-size: 2rem;
                             font-weight: bold;
                             display: inline-flex;
                             align-items: center;
@@ -43,7 +43,7 @@ export default class MyFunWords extends HTMLElement {
                             width: 100%;
                             text-align: left;
 														color: #307ad5;
-                            transition: transform 0.5s ease-in-out, opacity 0.5s;
+                            transition: transform 0.5s ease-in-out;
                         }
                     </style>
                     <div class="container">
