@@ -28,7 +28,7 @@ export default class MyFunWords extends HTMLElement {
 					.container {
 						display: inline-flex;
 						align-items: center;
-						font-size: 2rem;
+						font-size: 4rem;
 						font-weight: bold;
 					}
 					.word-wrapper {
