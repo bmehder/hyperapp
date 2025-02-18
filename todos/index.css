@@ -53,7 +53,7 @@ body {
 .outer {
 	font-size: 1.25rem;
 
-	.selected {
+	.isSelected {
 		background-color: dodgerblue;
 		color: white;
 	}
@@ -68,7 +68,6 @@ body {
 
 /* Component */
 .todo-app {
-	/* max-width: 24rem; */
 	margin-inline: auto;
 
 	.new-todo {

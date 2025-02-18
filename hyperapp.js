@@ -25,6 +25,11 @@ const withEnterKey = action => (state, payload) =>
 const withTargetValue = action => (state, payload) =>
 	payload.target.value ? [action, payload.target.value] : state
 
+const withConfirmation = action => (state, index) =>
+	confirm('Are you sure you want to delete this todo item?')
+		? [action, index]
+		: state
+
 const withLogging = dispatch => (action, props) => {
 	console.group(`Action: ${action.name || 'anonymous'}`)
 	console.log('Props:', props)
@@ -54,6 +59,7 @@ export {
 	preventDefault,
 	withEnterKey,
 	withTargetValue,
+	withConfirmation,
 	withLogging,
 	focus,
 	blur,

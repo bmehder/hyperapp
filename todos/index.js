@@ -6,18 +6,18 @@ const setInitialState = (title = 'Todo List', todos = []) => [
 		title,
 		todos,
 		newTodo: null,
-		filter: 'all',
+		filteredBy: 'all',
 	},
 	focus('todo-input'),
 ]
 
 const view = state =>
 	html.div({ class: 'todo-app flow' }, [
-		Views.todoTitle(state),
-		Views.todoInput(state),
-		Views.todoFilters(state),
-		Views.todoList(state),
-		Views.todosInfo(state),
+		Views.title(state),
+		Views.newTodo(state),
+		Views.filters(state),
+		Views.list(state),
+		Views.info(state),
 	])
 
 export default ({ node, title, todos }) =>

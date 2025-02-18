@@ -9,15 +9,13 @@ export const AddTodo = state =>
 				newTodo: null,
 		  }
 
-export const UpdateTodo = (state, index) => {
-	const todos = [...state.todos]
-	todos[index].isDone = !todos[index].isDone
-
-	return {
-		...state,
-		todos,
-	}
-}
+export const UpdateTodo = (state, index) => ({
+	...state,
+	todos: state.todos.toSpliced(index, 1, {
+		...state.todos[index],
+		isDone: !state.todos[index].isDone,
+	}),
+})
 
 export const DeleteTodo = (state, index) => ({
 	...state,
@@ -26,15 +24,15 @@ export const DeleteTodo = (state, index) => ({
 
 export const FilterCompleted = state => ({
 	...state,
-	filter: 'completed',
+	filteredBy: 'completed',
 })
 
 export const FilterRemaining = state => ({
 	...state,
-	filter: 'remaining',
+	filteredBy: 'remaining',
 })
 
 export const FilterAll = state => ({
 	...state,
-	filter: 'all',
+	filteredBy: 'all',
 })

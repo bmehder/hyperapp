@@ -1,9 +1,21 @@
-import { html, tag, text, withEnterKey, withTargetValue } from '../hyperapp.js'
+import {
+	html,
+	tag,
+	text,
+	not,
+	withEnterKey,
+	withTargetValue,
+	withConfirmation,
+} from '../hyperapp.js'
 import * as Actions from './+actions.js'
 
-export const todoTitle = ({ title }) => html.h1(text(title))
+// Helpers
+const isDone = ({ isDone }) => isDone
+const isNotDone = not(isDone)
 
-export const todoInput = state =>
+export const title = ({ title }) => html.h1(text(title))
+
+export const newTodo = state =>
 	html.div({ class: 'new-todo' }, [
 		html.input({
 			id: 'todo-input',
@@ -15,29 +27,29 @@ export const todoInput = state =>
 		html.button({ onclick: Actions.AddTodo }, text('+')),
 	])
 
-const filterButton = ({ selected, onclick, txt }) =>
-	html.li(html.button({ class: { selected }, onclick }, text(txt)))
+const filterButton = ({ textContent, isSelected, onclick }) =>
+	html.li(html.button({ class: { isSelected }, onclick }, text(textContent)))
 
-export const todoFilters = state =>
+export const filters = state =>
 	tag('menu')({ class: 'filter-buttons' }, [
 		filterButton({
-			selected: state.filter === 'all',
+			textContent: 'All',
+			isSelected: state.filteredBy === 'all',
 			onclick: Actions.FilterAll,
-			txt: 'All',
 		}),
 		filterButton({
-			selected: state.filter === 'completed',
+			textContent: 'Completed',
+			isSelected: state.filteredBy === 'completed',
 			onclick: Actions.FilterCompleted,
-			txt: 'Completed',
 		}),
 		filterButton({
-			selected: state.filter === 'remaining',
+			textContent: 'Remaining',
+			isSelected: state.filteredBy === 'remaining',
 			onclick: Actions.FilterRemaining,
-			txt: 'Remaining',
 		}),
 	])
 
-const _todoList = todos =>
+const todoList = todos =>
 	html.ul(
 		todos.map((todo, index) =>
 			html.li({ class: 'todo-list-item' }, [
@@ -56,30 +68,29 @@ const _todoList = todos =>
 						text(todo.name)
 					),
 				]),
-				html.button({ onclick: [Actions.DeleteTodo, index] }, text('X')),
+				html.button(
+					{ onclick: withConfirmation(Actions.DeleteTodo, index) },
+					text('X')
+				),
 			])
 		)
 	)
 
-const isDone = ({ isDone }) => isDone
-const isNotDone = ({ isDone }) => !isDone
-
-export const todoList = state =>
-	state.filter === 'completed'
-		? _todoList(state.todos.filter(isDone))
-		: state.filter === 'remaining'
-		? _todoList(state.todos.filter(isNotDone))
-		: _todoList(state.todos)
+export const list = state =>
+	state.filteredBy === 'completed'
+		? todoList(state.todos.filter(isDone))
+		: state.filteredBy === 'remaining'
+		? todoList(state.todos.filter(isNotDone))
+		: todoList(state.todos)
 
 const todosCount = state => state.todos.length
 
-const completedTodosCount = state =>
-	state.todos.filter(({ isDone }) => isDone).length
+const completedTodosCount = state => state.todos.filter(isDone).length
 
 const isSingleTodo = state => state.todos.length === 1
 
-export const todosInfo = state =>
-	html.p([
+export const info = state =>
+	html.div([
 		text(completedTodosCount(state)),
 		text(' / '),
 		text(
