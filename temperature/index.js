@@ -1,6 +1,4 @@
-import { app, html, text, withTargetValue, focus } from '../hyperapp.js'
-
-const init = [{ c: 0, f: 32 }, focus('celsius')]
+import { app, html, text, withTargetValue, focus, see } from '../hyperapp.js'
 
 const Actions = {
 	SetCelsius: (_, x) => ({ c: x, f: parseInt((x * 9) / 5 + 32) }),
@@ -18,10 +16,9 @@ const Views = {
 				oninput,
 			}),
 		]),
-
 	equals: () => html.div({ class: 'equals' }, text('=')),
-
 	default: state =>
+		see(state) &&
 		html.div({ class: 'app-temperature' }, [
 			Views.tempUnit({
 				label: 'Celsius',
@@ -41,7 +38,7 @@ const Views = {
 
 export default ({ node }) =>
 	app({
-		node,
-		init,
+		init: [{ c: 0, f: 32 }, focus('celsius')],
 		view: Views.default,
+		node,
 	})

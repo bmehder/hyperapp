@@ -25,6 +25,11 @@ const Actions = {
 	Subtract: state => ({ ...state, result: state.first - state.last }),
 	Multiply: state => ({ ...state, result: state.first * state.last }),
 	Divide: state => ({ ...state, result: state.first / state.last }),
+	Reset: _ => ({
+		first: 0,
+		last: 0,
+		result: null,
+	}),
 }
 
 const Views = {
@@ -44,6 +49,7 @@ const Views = {
 			Views.calcButton('Subtract', Actions.Subtract),
 			Views.calcButton('Multiply', Actions.Multiply),
 			Views.calcButton('Divide', Actions.Divide),
+			Views.calcButton('Reset', Actions.Reset),
 			Views.result(state),
 		]),
 }
