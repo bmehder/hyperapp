@@ -31,6 +31,12 @@ const Actions = {
 		...state,
 		moreLeadsPerMonth: event.target.value,
 	}),
+	Reset: () => ({
+		avgSale: 500,
+		repeatPercent: 10,
+		leadsPercent: 10,
+		moreLeadsPerMonth: 1,
+	}),
 }
 
 const Views = {
@@ -142,6 +148,7 @@ const Views = {
 				),
 				readonly: true,
 			}),
+			html.button({ onclick: Actions.Reset }, text('Reset')),
 		]),
 }
 export default ({ node }) => app({ init: Actions.init, view: Views.default, node })
